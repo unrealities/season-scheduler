@@ -7,15 +7,15 @@ import (
 	"io/ioutil"
 )
 
-var config = flag.String("config", "config.json", "location of config file.")
+var configFile = flag.String("config", "config.json", "location of config file.")
 
 type config struct {
-	NumberOfTeams int `json: number_of_teams`
+	NumberOfTeams int `json:"numberOfTeams"`
 }
 
 func main() {
 	flag.Parse()
-	cfg, err := ioutil.ReadFile(*config)
+	cfg, err := ioutil.ReadFile(*configFile)
 	if err != nil {
 		fmt.Println("unable to locate config file")
 	}
