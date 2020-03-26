@@ -7,22 +7,27 @@ import (
 	"io/ioutil"
 )
 
-var configFile = flag.String("config", "config.json", "location of config file.")
-
 type config struct {
 	NumberOfTeams int `json:"numberOfTeams"`
 }
 
 func main() {
 	flag.Parse()
-	cfg, err := ioutil.ReadFile(*configFile)
+	configFile := flag.String("config", "config.json", "location of config file.")
+	config, err := parseConfig(configFile)
 	if err != nil {
-		fmt.Println("unable to locate config file")
+		fmt.Println("unable to parse config file")
 	}
+	fmt.Println(config.NumberOfTeams)
+}
 
+func parseConfig(file *string) (config, error) {
 	var config config
-	err = json.Unmarshal(cfg, &config)
+	cfg, err := ioutil.ReadFile(*file)
 	if err != nil {
-		fmt.Println("config file not properly formatted")
+		return config, err
 	}
+	err = json.Unmarshal(cfg, &config)
+
+	return config, err
 }
