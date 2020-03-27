@@ -8,7 +8,14 @@ import (
 )
 
 type config struct {
-	NumberOfTeams int `json:"numberOfTeams"`
+	Teams []team `json:"teams"`
+}
+
+type team struct {
+	Conference int    `json:"conference"`
+	Divison    int    `json:"division"`
+	ID         int    `json:"ID"`
+	Name       string `json:"name"`
 }
 
 func main() {
@@ -18,7 +25,7 @@ func main() {
 	if err != nil {
 		fmt.Println("unable to parse config file")
 	}
-	fmt.Println(config.NumberOfTeams)
+	fmt.Printf("teams: %+v", config.Teams)
 }
 
 func parseConfig(file *string) (config, error) {
