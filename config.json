@@ -1,0 +1,18 @@
+{
+    "teams": [
+        {
+            "conference": 0,
+            "division": 0,
+            "ID": 0,
+            "name": "Cubs",
+            "region": "Chicago"
+        },
+        {
+            "conference": 0,
+            "division": 1,
+            "ID": 1,
+            "name": "Braves",
+            "region": "Atlanta"
+        }
+    ]
+}

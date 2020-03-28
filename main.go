@@ -16,6 +16,7 @@ type team struct {
 	Divison    int    `json:"division"`
 	ID         int    `json:"ID"`
 	Name       string `json:"name"`
+	Region     string `json:"regions"`
 }
 
 func main() {
@@ -23,7 +24,7 @@ func main() {
 	configFile := flag.String("config", "config.json", "location of config file.")
 	config, err := parseConfig(configFile)
 	if err != nil {
-		fmt.Println("unable to parse config file")
+		fmt.Printf("unable to parse config file: %s", err)
 	}
 	fmt.Printf("teams: %+v", config.Teams)
 }
