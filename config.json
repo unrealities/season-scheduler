@@ -13,6 +13,202 @@
             "ID": 1,
             "name": "Braves",
             "region": "Atlanta"
+        },
+        {
+            "conference": 0,
+            "division": 0,
+            "ID": 2,
+            "name": "Cardinals",
+            "region": "St. Louis"
+        },
+        {
+            "conference": 0,
+            "division": 0,
+            "ID": 3,
+            "name": "Pirates",
+            "region": "Pittsburgh"
+        },
+        {
+            "conference": 0,
+            "division": 0,
+            "ID": 4,
+            "name": "Reds",
+            "region": "Cincinnati"
+        },
+        {
+            "conference": 0,
+            "division": 2,
+            "ID": 5,
+            "name": "Giants",
+            "region": "San Francisco"
+        },
+        {
+            "conference": 0,
+            "division": 1,
+            "ID": 6,
+            "name": "Phillies",
+            "region": "Philadelphia"
+        },
+        {
+            "conference": 0,
+            "division": 2,
+            "ID": 7,
+            "name": "Dodgers",
+            "region": "Los Angeles"
+        },
+        {
+            "conference": 1,
+            "division": 2,
+            "ID": 8,
+            "name": "Athletics",
+            "region": "Oakland"
+        },
+        {
+            "conference": 1,
+            "division": 0,
+            "ID": 9,
+            "name": "Minnesota",
+            "region": "Twins"
+        },
+        {
+            "conference": 1,
+            "division": 0,
+            "ID": 10,
+            "name": "Tigers",
+            "region": "Detroit"
+        },
+        {
+            "conference": 1,
+            "division": 0,
+            "ID": 11,
+            "name": "Indians",
+            "region": "Cleveland"
+        },
+        {
+            "conference": 1,
+            "division": 0,
+            "ID": 12,
+            "name": "White Sox",
+            "region": "Chicago"
+        },
+        {
+            "conference": 1,
+            "division": 1,
+            "ID": 13,
+            "name": "Red Sox",
+            "region": "Boston"
+        },
+        {
+            "conference": 1,
+            "division": 1,
+            "ID": 14,
+            "name": "Orioles",
+            "region": "Baltimore"
+        },
+        {
+            "conference": 1,
+            "division": 1,
+            "ID": 15,
+            "name": "Yankees",
+            "region": "New York"
+        },
+        {
+            "conference": 1,
+            "division": 2,
+            "ID": 16,
+            "name": "Rangers",
+            "region": "Texas"
+        },
+        {
+            "conference": 1,
+            "division": 2,
+            "ID": 17,
+            "name": "Angels",
+            "region": "Los Angeles"
+        },
+        {
+            "conference": 0,
+            "division": 1,
+            "ID": 18,
+            "name": "Mets",
+            "region": "New York"
+        },
+        {
+            "conference": 1,
+            "division": 2,
+            "ID": 19,
+            "name": "Astros",
+            "region": "Houston"
+        },
+        {
+            "conference": 0,
+            "division": 1,
+            "ID": 20,
+            "name": "Nationals",
+            "region": "Washington"
+        },
+        {
+            "conference": 0,
+            "division": 2,
+            "ID": 21,
+            "name": "Padres",
+            "region": "San Diego"
+        },
+        {
+            "conference": 0,
+            "division": 0,
+            "ID": 22,
+            "name": "Brewers",
+            "region": "Milwaukee"
+        },
+        {
+            "conference": 1,
+            "division": 0,
+            "ID": 23,
+            "name": "Royals",
+            "region": "Kansas City"
+        },
+        {
+            "conference": 1,
+            "division": 1,
+            "ID": 24,
+            "name": "Blue Jays",
+            "region": "Toronto"
+        },
+        {
+            "conference": 1,
+            "division": 2,
+            "ID": 25,
+            "name": "Mariners",
+            "region": "Seattle"
+        },
+        {
+            "conference": 0,
+            "division": 1,
+            "ID": 26,
+            "name": "Marlins",
+            "region": "Miami"
+        },
+        {
+            "conference": 0,
+            "division": 2,
+            "ID": 27,
+            "name": "Rockies",
+            "region": "Colorado"
+        },
+        {
+            "conference": 1,
+            "division": 1,
+            "ID": 28,
+            "name": "Rays",
+            "region": "Tampa Bay"
+        },
+        {
+            "conference": 0,
+            "division": 2,
+            "ID": 29,
+            "name": "Diamondbacks",
+            "region": "Arizona"
         }
     ]
 }
