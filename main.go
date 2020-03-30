@@ -5,10 +5,13 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"time"
 )
 
 type config struct {
-	Teams []team `json:"teams"`
+	EndDate   time.Time `json:"endDate"`
+	StartDate time.Time `json:"startDate"`
+	Teams     []team    `json:"teams"`
 }
 
 type team struct {
@@ -26,7 +29,7 @@ func main() {
 	if err != nil {
 		fmt.Printf("unable to parse config file: %s", err)
 	}
-	fmt.Printf("teams: %+v", config.Teams)
+	fmt.Printf("teams: %+v", config)
 }
 
 func parseConfig(file *string) (config, error) {
