@@ -22,6 +22,14 @@ type team struct {
 	Region     string `json:"regions"`
 }
 
+type game struct {
+	AwayTeam int       `json:"awayTeam"`
+	HomeTeam int       `json:"homeTeam"`
+	Time     time.Time `json:"time"`
+}
+
+type schedule []game
+
 func main() {
 	flag.Parse()
 	configFile := flag.String("config", "config.json", "location of config file.")
@@ -29,7 +37,11 @@ func main() {
 	if err != nil {
 		fmt.Printf("unable to parse config file: %s", err)
 	}
-	fmt.Printf("teams: %+v", config)
+	fmt.Printf("config: %+v", config)
+	fmt.Printf("teams: %+v", config.Teams)
+
+	// TODO: Need to create team schedules and league schedule to track games
+	// lgSchedule := schedule{}
 }
 
 func parseConfig(file *string) (config, error) {
