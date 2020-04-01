@@ -29,6 +29,7 @@ type game struct {
 }
 
 type schedule []game
+type schedules []schedule
 
 func main() {
 	flag.Parse()
@@ -40,8 +41,12 @@ func main() {
 	fmt.Printf("config: %+v", config)
 	fmt.Printf("teams: %+v", config.Teams)
 
-	// TODO: Need to create team schedules and league schedule to track games
-	// lgSchedule := schedule{}
+	// Instantiate a league schedule with team's schedules
+	lgSchedule := schedules{}
+	for i := range config.Teams {
+		lgSchedule[i] = schedule{}
+	}
+
 }
 
 func parseConfig(file *string) (config, error) {
