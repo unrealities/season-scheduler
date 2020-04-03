@@ -10,6 +10,7 @@ import (
 
 type config struct {
 	EndDate   time.Time `json:"endDate"`
+	NumGames  int       `json:"numGames"`
 	StartDate time.Time `json:"startDate"`
 	Teams     []team    `json:"teams"`
 }
@@ -46,7 +47,6 @@ func main() {
 	for i := range config.Teams {
 		lgSchedule[i] = schedule{}
 	}
-
 }
 
 func parseConfig(file *string) (config, error) {
