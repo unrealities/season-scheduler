@@ -47,6 +47,14 @@ func main() {
 	for i := range config.Teams {
 		lgSchedule[i] = schedule{}
 	}
+
+	// TODO: This is the hard part. Need to actually make a schedule
+	// Trying to do the "dumb" thing and start with the base case where each team
+	// has to play one other team with no other qualifications
+	for g := 0; g < config.NumGames; g++ {
+		// TODO: Need to keep some type of map to see how many games still need
+		// to be scheduled and which teams already have a game scheduled
+	}
 }
 
 func parseConfig(file *string) (config, error) {
