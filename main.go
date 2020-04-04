@@ -52,8 +52,26 @@ func main() {
 	// Trying to do the "dumb" thing and start with the base case where each team
 	// has to play one other team with no other qualifications
 	for g := 0; g < config.NumGames; g++ {
-		// TODO: Need to keep some type of map to see how many games still need
-		// to be scheduled and which teams already have a game scheduled
+		for i, s := range lgSchedule {
+			// check to see if a given team's schedule has reached the required number of games
+			if len(s) < config.NumGames {
+				for j, t := range lgSchedule {
+					// a team cannot play itself
+					if i == j {
+						continue
+					}
+					// check to see if opponent still needs to play games
+					if len(t) < config.NumGames {
+						newGame := game{
+							AwayTeam: i,
+							HomeTeam: j,
+						}
+						s = append(s, newGame)
+						t = append(t, newGame)
+					}
+				}
+			}
+		}
 	}
 }
 
