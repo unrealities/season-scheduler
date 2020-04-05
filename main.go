@@ -20,7 +20,7 @@ type team struct {
 	Divison    int    `json:"division"`
 	ID         int    `json:"ID"`
 	Name       string `json:"name"`
-	Region     string `json:"regions"`
+	Region     string `json:"region"`
 }
 
 type game struct {
@@ -43,15 +43,14 @@ func main() {
 	fmt.Printf("teams: %+v", config.Teams)
 
 	// Instantiate a league schedule with team's schedules
-	lgSchedule := schedules{}
-	for i := range config.Teams {
-		lgSchedule[i] = schedule{}
-	}
+	numTeams := len(config.Teams)
+	lgSchedule := make(schedules, numTeams, numTeams)
 
 	// TODO: This is the hard part. Need to actually make a schedule
 	// Trying to do the "dumb" thing and start with the base case where each team
 	// has to play one other team with no other qualifications
 	for g := 0; g < config.NumGames; g++ {
+		fmt.Printf("processing game: %d", g)
 		for i, s := range lgSchedule {
 			// check to see if a given team's schedule has reached the required number of games
 			if len(s) < config.NumGames {
@@ -66,6 +65,7 @@ func main() {
 							AwayTeam: i,
 							HomeTeam: j,
 						}
+						fmt.Printf("making a new game: %+v", newGame)
 						s = append(s, newGame)
 						t = append(t, newGame)
 					}
@@ -73,6 +73,8 @@ func main() {
 			}
 		}
 	}
+
+	fmt.Printf("lgSchedule: %+v", lgSchedule)
 }
 
 func parseConfig(file *string) (config, error) {
