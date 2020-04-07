@@ -59,6 +59,12 @@ func main() {
 					if i == j {
 						continue
 					}
+
+					// make sure a team is not playing more games than they should
+					if len(s) >= config.NumGames {
+						break
+					}
+
 					// check to see if opponent still needs to play games
 					if len(t) < config.NumGames {
 						newGame := game{
