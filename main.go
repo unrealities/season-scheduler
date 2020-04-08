@@ -71,9 +71,8 @@ func main() {
 							AwayTeam: i,
 							HomeTeam: j,
 						}
-						fmt.Printf("making a new game: %+v", newGame)
-						s = append(s, newGame)
-						t = append(t, newGame)
+						lgSchedule[j] = append(t, newGame)
+						lgSchedule[i] = append(s, newGame)
 					}
 				}
 			}
