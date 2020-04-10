@@ -48,27 +48,29 @@ func main() {
 
 	// Generate games
 	for g := 0; g < config.NumGames; g++ {
-		fmt.Printf("processing game: %d", g)
-		for i, s := range lgSchedule {
+		for i := range lgSchedule {
 			// check to see if a given team's schedule has reached the required number of games
-			if len(s) < config.NumGames {
-				for j, t := range lgSchedule {
+			if len(lgSchedule[i]) < config.NumGames {
+				for j := range lgSchedule {
 					// a team cannot play itself
 					if i == j {
 						continue
 					}
 
 					// make sure a team is not playing more games than they should
-					if len(s) >= config.NumGames {
+					if len(lgSchedule[i]) >= config.NumGames {
 						break
 					}
 
+					// TODO: Handle dates. Don't allow two games in one day
+					// TODO: Allow config for double-headers (still has to be same two teams)
+
 					// check to see if opponent still needs to play games
-					if len(t) < config.NumGames {
+					if len(lgSchedule[j]) < config.NumGames {
 						// TODO: Make a unique game ID
 						newGame := game{AwayTeam: i, HomeTeam: j}
-						lgSchedule[j] = append(t, newGame)
-						lgSchedule[i] = append(s, newGame)
+						lgSchedule[j] = append(lgSchedule[j], newGame)
+						lgSchedule[i] = append(lgSchedule[i], newGame)
 						lgGames = append(lgGames, newGame)
 					}
 				}
