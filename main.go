@@ -26,6 +26,7 @@ type team struct {
 type game struct {
 	AwayTeam int       `json:"awayTeam"`
 	HomeTeam int       `json:"homeTeam"`
+	ID       int       `json:"ID"`
 	Time     time.Time `json:"time"`
 }
 
@@ -39,16 +40,13 @@ func main() {
 	if err != nil {
 		fmt.Printf("unable to parse config file: %s", err)
 	}
-	fmt.Printf("config: %+v", config)
-	fmt.Printf("teams: %+v", config.Teams)
 
 	// Instantiate a league schedule with team's schedules
 	numTeams := len(config.Teams)
 	lgSchedule := make(schedules, numTeams, numTeams)
+	lgGames := schedule{}
 
-	// TODO: This is the hard part. Need to actually make a schedule
-	// Trying to do the "dumb" thing and start with the base case where each team
-	// has to play one other team with no other qualifications
+	// Generate games
 	for g := 0; g < config.NumGames; g++ {
 		fmt.Printf("processing game: %d", g)
 		for i, s := range lgSchedule {
@@ -67,19 +65,21 @@ func main() {
 
 					// check to see if opponent still needs to play games
 					if len(t) < config.NumGames {
-						newGame := game{
-							AwayTeam: i,
-							HomeTeam: j,
-						}
+						// TODO: Make a unique game ID
+						newGame := game{AwayTeam: i, HomeTeam: j}
 						lgSchedule[j] = append(t, newGame)
 						lgSchedule[i] = append(s, newGame)
+						lgGames = append(lgGames, newGame)
 					}
 				}
 			}
 		}
 	}
 
-	fmt.Printf("lgSchedule: %+v", lgSchedule)
+	// Show scheduled games
+	for _, l := range lgGames {
+		fmt.Println(l.prettyPrint(config))
+	}
 }
 
 func parseConfig(file *string) (config, error) {
@@ -91,4 +91,17 @@ func parseConfig(file *string) (config, error) {
 	err = json.Unmarshal(cfg, &config)
 
 	return config, err
+}
+
+func (g game) prettyPrint(c config) string {
+	aTeamID := g.AwayTeam
+	hTeamID := g.HomeTeam
+	awayTeam := c.Teams[aTeamID]
+	homeTeam := c.Teams[hTeamID]
+	prettyAwayTeam := fmt.Sprintf("%s %s", awayTeam.Region, awayTeam.Name)
+	prettyHomeTeam := fmt.Sprintf("%s %s", homeTeam.Region, homeTeam.Name)
+
+	prettyDate := g.Time.Format("[Jan_2]")
+
+	return fmt.Sprintf("%s @ %s %s", prettyAwayTeam, prettyHomeTeam, prettyDate)
 }
