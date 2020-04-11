@@ -45,6 +45,7 @@ func main() {
 	numTeams := len(config.Teams)
 	lgSchedule := make(schedules, numTeams, numTeams)
 	lgGames := schedule{}
+	lgGameID := 0
 
 	// Generate games
 	for g := 0; g < config.NumGames; g++ {
@@ -67,8 +68,8 @@ func main() {
 
 					// check to see if opponent still needs to play games
 					if len(lgSchedule[j]) < config.NumGames {
-						// TODO: Make a unique game ID
-						newGame := game{AwayTeam: i, HomeTeam: j}
+						lgGameID++
+						newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j}
 						lgSchedule[j] = append(lgSchedule[j], newGame)
 						lgSchedule[i] = append(lgSchedule[i], newGame)
 						lgGames = append(lgGames, newGame)
@@ -105,5 +106,5 @@ func (g game) prettyPrint(c config) string {
 
 	prettyDate := g.Time.Format("[Jan_2]")
 
-	return fmt.Sprintf("%s @ %s %s", prettyAwayTeam, prettyHomeTeam, prettyDate)
+	return fmt.Sprintf("%d | %s @ %s %s", g.ID, prettyAwayTeam, prettyHomeTeam, prettyDate)
 }
