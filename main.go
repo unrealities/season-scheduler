@@ -48,32 +48,31 @@ func main() {
 	lgGameID := 0
 
 	// Generate games
-	for g := 0; g < config.NumGames; g++ {
-		for i := range lgSchedule {
-			// check to see if a given team's schedule has reached the required number of games
-			if len(lgSchedule[i]) < config.NumGames {
-				for j := range lgSchedule {
-					// a team cannot play itself
-					if i == j {
-						continue
-					}
+	// TODO: track the day
+	for i := range lgSchedule {
+		// check to see if a given team's schedule has reached the required number of games
+		if len(lgSchedule[i]) < config.NumGames {
+			for j := range lgSchedule {
+				// a team cannot play itself
+				if i == j {
+					continue
+				}
 
-					// make sure a team is not playing more games than they should
-					if len(lgSchedule[i]) >= config.NumGames {
-						break
-					}
+				// make sure a team is not playing more games than they should
+				if len(lgSchedule[i]) >= config.NumGames {
+					break
+				}
 
-					// TODO: Handle dates. Don't allow two games in one day
-					// TODO: Allow config for double-headers (still has to be same two teams)
+				// TODO: Handle dates. Don't allow two games in one day
+				// TODO: Allow config for double-headers (still has to be same two teams)
 
-					// check to see if opponent still needs to play games
-					if len(lgSchedule[j]) < config.NumGames {
-						lgGameID++
-						newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j}
-						lgSchedule[j] = append(lgSchedule[j], newGame)
-						lgSchedule[i] = append(lgSchedule[i], newGame)
-						lgGames = append(lgGames, newGame)
-					}
+				// check to see if opponent still needs to play games
+				if len(lgSchedule[j]) < config.NumGames {
+					lgGameID++
+					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j}
+					lgSchedule[j] = append(lgSchedule[j], newGame)
+					lgSchedule[i] = append(lgSchedule[i], newGame)
+					lgGames = append(lgGames, newGame)
 				}
 			}
 		}
@@ -82,6 +81,14 @@ func main() {
 	// Show scheduled games
 	for _, l := range lgGames {
 		fmt.Println(l.prettyPrint(config))
+	}
+
+	// Verify every team gets the required number of games
+	for i := range lgSchedule {
+		teamGames := len(lgSchedule[i])
+		if teamGames != config.NumGames {
+			fmt.Println(fmt.Sprintf("%d: %d", i, teamGames))
+		}
 	}
 }
 
