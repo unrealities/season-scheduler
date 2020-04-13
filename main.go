@@ -67,7 +67,8 @@ func main() {
 				// TODO: Allow config for double-headers (still has to be same two teams)
 
 				// check to see if opponent still needs to play games
-				if len(lgSchedule[j]) < config.NumGames {
+				// TODO: This will consume all games against a single opponent
+				for len(lgSchedule[j]) < config.NumGames {
 					lgGameID++
 					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j}
 					lgSchedule[j] = append(lgSchedule[j], newGame)
