@@ -70,7 +70,8 @@ func main() {
 				// TODO: This will consume all games against a single opponent
 				for len(lgSchedule[j]) < config.NumGames {
 					lgGameID++
-					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j}
+					gameTime := config.StartDate
+					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j, Time: gameTime}
 					lgSchedule[j] = append(lgSchedule[j], newGame)
 					lgSchedule[i] = append(lgSchedule[i], newGame)
 					lgGames = append(lgGames, newGame)
