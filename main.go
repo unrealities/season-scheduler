@@ -63,13 +63,12 @@ func main() {
 					break
 				}
 
-				// TODO: Handle dates. Don't allow two games in one day
-				// TODO: Allow config for double-headers (still has to be same two teams)
-
 				// check to see if opponent still needs to play games
 				// TODO: This will consume all games against a single opponent
 				for len(lgSchedule[j]) < config.NumGames {
 					lgGameID++
+					// TODO: Handle dates. Don't allow two games in one day
+					// TODO: Allow config for double-headers (still has to be same two teams)
 					gameTime := config.StartDate
 					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j, Time: gameTime}
 					lgSchedule[j] = append(lgSchedule[j], newGame)
@@ -94,6 +93,7 @@ func main() {
 	}
 }
 
+// parseConfig reads the json config file and loads teams and other config settings
 func parseConfig(file *string) (config, error) {
 	var config config
 	cfg, err := ioutil.ReadFile(*file)
@@ -105,6 +105,7 @@ func parseConfig(file *string) (config, error) {
 	return config, err
 }
 
+// prettyPrint outputs a human readable version of a game
 func (g game) prettyPrint(c config) string {
 	aTeamID := g.AwayTeam
 	hTeamID := g.HomeTeam
@@ -116,4 +117,10 @@ func (g game) prettyPrint(c config) string {
 	prettyDate := g.Time.Format("[Jan_2]")
 
 	return fmt.Sprintf("%d | %s @ %s %s", g.ID, prettyAwayTeam, prettyHomeTeam, prettyDate)
+}
+
+// nextPlayableDate prevents a team from playing more than the desired number of games on a given day
+// and gives the next available date that the team can play
+func (t team) nextPlayableDate(date time.Time) time.Time {
+	return date
 }
