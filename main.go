@@ -9,10 +9,11 @@ import (
 )
 
 type config struct {
-	EndDate   time.Time `json:"endDate"`
-	NumGames  int       `json:"numGames"`
-	StartDate time.Time `json:"startDate"`
-	Teams     []team    `json:"teams"`
+	EndDate       time.Time `json:"endDate"`
+	DoubleHeaders bool      `json:"doubleHeaders"`
+	NumGames      int       `json:"numGames"`
+	StartDate     time.Time `json:"startDate"`
+	Teams         []team    `json:"teams"`
 }
 
 type team struct {
@@ -69,8 +70,11 @@ func main() {
 					lgGameID++
 					// TODO: Handle dates. Don't allow two games in one day
 					// TODO: Allow config for double-headers (still has to be same two teams)
-					gameTime := config.StartDate
-					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j, Time: gameTime}
+					htNextGame := config.Teams[j].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[j])
+					// atNextGame := config.Teams[i].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[i])
+
+					// TODO: determine max of htNextGame and atNextGame
+					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j, Time: htNextGame}
 					lgSchedule[j] = append(lgSchedule[j], newGame)
 					lgSchedule[i] = append(lgSchedule[i], newGame)
 					lgGames = append(lgGames, newGame)
@@ -121,6 +125,9 @@ func (g game) prettyPrint(c config) string {
 
 // nextPlayableDate prevents a team from playing more than the desired number of games on a given day
 // and gives the next available date that the team can play
-func (t team) nextPlayableDate(date time.Time) time.Time {
+func (t team) nextPlayableDate(date time.Time, doubleHeaders bool, games schedule) time.Time {
+	// TODO: Handle doubleHeaders
+	// TODO: Games should be in date order, so you can go to a team's last date and
+	// then check that date and give the next available date
 	return date
 }
