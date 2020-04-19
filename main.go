@@ -1,38 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
-	"time"
 )
-
-type config struct {
-	EndDate       time.Time `json:"endDate"`
-	DoubleHeaders bool      `json:"doubleHeaders"`
-	NumGames      int       `json:"numGames"`
-	StartDate     time.Time `json:"startDate"`
-	Teams         []team    `json:"teams"`
-}
-
-type team struct {
-	Conference int    `json:"conference"`
-	Divison    int    `json:"division"`
-	ID         int    `json:"ID"`
-	Name       string `json:"name"`
-	Region     string `json:"region"`
-}
-
-type game struct {
-	AwayTeam int       `json:"awayTeam"`
-	HomeTeam int       `json:"homeTeam"`
-	ID       int       `json:"ID"`
-	Time     time.Time `json:"time"`
-}
-
-type schedule []game
-type schedules []schedule
 
 func main() {
 	flag.Parse()
@@ -49,7 +20,6 @@ func main() {
 	lgGameID := 0
 
 	// Generate games
-	// TODO: track the day
 	for i := range lgSchedule {
 		// check to see if a given team's schedule has reached the required number of games
 		if len(lgSchedule[i]) < config.NumGames {
@@ -95,54 +65,4 @@ func main() {
 			fmt.Println(fmt.Sprintf("%d: %d", i, teamGames))
 		}
 	}
-}
-
-// parseConfig reads the json config file and loads teams and other config settings
-func parseConfig(file *string) (config, error) {
-	var config config
-	cfg, err := ioutil.ReadFile(*file)
-	if err != nil {
-		return config, err
-	}
-	err = json.Unmarshal(cfg, &config)
-
-	return config, err
-}
-
-// prettyPrint outputs a human readable version of a game
-func (g game) prettyPrint(c config) string {
-	aTeamID := g.AwayTeam
-	hTeamID := g.HomeTeam
-	awayTeam := c.Teams[aTeamID]
-	homeTeam := c.Teams[hTeamID]
-	prettyAwayTeam := fmt.Sprintf("%s %s", awayTeam.Region, awayTeam.Name)
-	prettyHomeTeam := fmt.Sprintf("%s %s", homeTeam.Region, homeTeam.Name)
-
-	prettyDate := g.Time.Format("[Jan_2]")
-
-	return fmt.Sprintf("%d | %s @ %s %s", g.ID, prettyAwayTeam, prettyHomeTeam, prettyDate)
-}
-
-// nextPlayableDate prevents a team from playing more than the desired number of games on a given day
-// and gives the next available date that the team can play
-func (t team) nextPlayableDate(date time.Time, doubleHeaders bool, games schedule) time.Time {
-	// TODO: Handle doubleHeaders
-	if doubleHeaders {
-		return date
-	}
-
-	// base case. If a team has no games, then their first game should be on the start of the season
-	if len(games) == 0 {
-		return date
-	}
-
-	// get the most recently played game (which should be the last game in the schedule slice)
-	mostRecentGame := games[len(games)-1]
-	mostRecentDate := mostRecentGame.Time
-
-	// return the next available date
-	// TODO: account for league holidays
-	// TODO: account for too many consecutive games
-	// TODO: allow for travel days
-	return mostRecentDate.AddDate(0, 0, 1)
 }
