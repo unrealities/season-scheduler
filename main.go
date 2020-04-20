@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"time"
 )
 
 func main() {
@@ -41,10 +42,10 @@ func main() {
 					// TODO: Handle dates. Don't allow two games in one day
 					// TODO: Allow config for double-headers (still has to be same two teams)
 					htNextGame := config.Teams[j].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[j])
-					// atNextGame := config.Teams[i].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[i])
+					atNextGame := config.Teams[i].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[i])
+					nextGame := maxTime(htNextGame, atNextGame)
 
-					// TODO: determine max of htNextGame and atNextGame
-					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j, Time: htNextGame}
+					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j, Time: nextGame}
 					lgSchedule[j] = append(lgSchedule[j], newGame)
 					lgSchedule[i] = append(lgSchedule[i], newGame)
 					lgGames = append(lgGames, newGame)
@@ -65,4 +66,11 @@ func main() {
 			fmt.Println(fmt.Sprintf("%d: %d", i, teamGames))
 		}
 	}
+}
+
+func maxTime(t1, t2 time.Time) time.Time {
+	if t1.After(t2) {
+		return t1
+	}
+	return t2
 }
