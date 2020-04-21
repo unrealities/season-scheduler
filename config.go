@@ -10,6 +10,8 @@ type config struct {
 	EndDate       time.Time `json:"endDate"`
 	DoubleHeaders bool      `json:"doubleHeaders"`
 	NumGames      int       `json:"numGames"`
+	SeriesMax     int       `json:"seriesMax"`
+	SeriesMin     int       `json:"seriesMin"`
 	StartDate     time.Time `json:"startDate"`
 	Teams         []team    `json:"teams"`
 }

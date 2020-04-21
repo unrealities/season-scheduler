@@ -37,6 +37,8 @@ func main() {
 
 				// check to see if opponent still needs to play games
 				// TODO: This will consume all games against a single opponent
+				// TODO fetch random number [seriesMin, seriesMax] and play a series of that length
+				// If greater than number of games, then reduce until seriesMin?
 				for len(lgSchedule[j]) < config.NumGames {
 					lgGameID++
 					// TODO: Handle dates. Don't allow two games in one day
