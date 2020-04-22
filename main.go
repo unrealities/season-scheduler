@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math/rand"
 	"time"
 )
 
@@ -37,10 +38,11 @@ func main() {
 
 				// check to see if opponent still needs to play games
 				// TODO: This will consume all games against a single opponent
-				// TODO fetch random number [seriesMin, seriesMax] and play a series of that length
-				// If greater than number of games, then reduce until seriesMin?
-				for len(lgSchedule[j]) < config.NumGames {
+				seriesLength := randSeriesLength(config.SeriesMin, config.SeriesMax)
+				series := 0
+				for (len(lgSchedule[j]) < config.NumGames) && (series <= seriesLength) {
 					lgGameID++
+					series++
 					// TODO: Handle dates. Don't allow two games in one day
 					// TODO: Allow config for double-headers (still has to be same two teams)
 					htNextGame := config.Teams[j].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[j])
@@ -75,4 +77,12 @@ func maxTime(t1, t2 time.Time) time.Time {
 		return t1
 	}
 	return t2
+}
+
+func randSeriesLength(min, max int) int {
+	rng := max - min
+	if rng <= 0 {
+		return 0
+	}
+	return rand.Intn(rng) + min
 }
