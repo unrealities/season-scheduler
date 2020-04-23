@@ -12,7 +12,7 @@ type team struct {
 
 // nextPlayableDate prevents a team from playing more than the desired number of games on a given day
 // and gives the next available date that the team can play
-func (t team) nextPlayableDate(date time.Time, doubleHeaders bool, games schedule) time.Time {
+func (t team) nextPlayableDate(date time.Time, doubleHeaders bool, games schedule, seriesLength int) time.Time {
 	// TODO: Handle doubleHeaders
 	if doubleHeaders {
 		return date
@@ -22,6 +22,9 @@ func (t team) nextPlayableDate(date time.Time, doubleHeaders bool, games schedul
 	if len(games) == 0 {
 		return date
 	}
+
+	// TODO: need to check if the team's first game is more than the seriesLength from the start of the season
+	// It is possible that a team's first assigned game comes later in the season than necessary
 
 	// get the most recently played game (which should be the last game in the schedule slice)
 	mostRecentGame := games[len(games)-1]

@@ -45,8 +45,8 @@ func main() {
 					series++
 					// TODO: Handle dates. Don't allow two games in one day
 					// TODO: Allow config for double-headers (still has to be same two teams)
-					htNextGame := config.Teams[j].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[j])
-					atNextGame := config.Teams[i].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[i])
+					htNextGame := config.Teams[j].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[j], seriesLength)
+					atNextGame := config.Teams[i].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[i], seriesLength)
 					nextGame := maxTime(htNextGame, atNextGame)
 
 					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j, Time: nextGame}
