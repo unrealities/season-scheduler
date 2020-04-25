@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"time"
 )
 
@@ -28,9 +27,8 @@ func (t team) nextPlayableDate(date time.Time, doubleHeaders bool, games schedul
 
 	// TODO: need to check if the team's first game is more than the seriesLength from the start of the season
 	// It is possible that a team's first assigned game comes later in the season than necessary
-	daysBetweenStartandFirstGame := date.Sub(games[0].Time).Hours() / 24
+	daysBetweenStartandFirstGame := games[0].Time.Sub(date).Hours() / 24
 	if int(daysBetweenStartandFirstGame) >= seriesLength {
-		log.Printf("sneaking in")
 		return date
 	}
 
