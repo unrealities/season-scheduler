@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"math/rand"
 	"time"
 )
@@ -38,9 +39,20 @@ func main() {
 
 				// check to see if opponent still needs to play games
 				// TODO: This will consume all games against a single opponent
-				seriesLength := randSeriesLength(config.SeriesMin, config.SeriesMax)
+
+				gamesRemaining := config.NumGames - len(lgSchedule[i])
+				if gamesRemaining < config.SeriesMax {
+					log.Printf("unable to schedule another series for %d", i)
+					break
+				}
+				maxSeriesLength := config.SeriesMax
+				if gamesRemaining < maxSeriesLength {
+					maxSeriesLength = gamesRemaining
+				}
+
+				seriesLength := randSeriesLength(config.SeriesMin, maxSeriesLength)
 				series := 0
-				for (len(lgSchedule[j]) < config.NumGames) && (series <= seriesLength) {
+				for (len(lgSchedule[j]) < config.NumGames) && (series <= seriesLength) && (len(lgSchedule[i]) < config.NumGames) {
 					lgGameID++
 					series++
 					// TODO: Handle dates. Don't allow two games in one day
@@ -67,7 +79,7 @@ func main() {
 	for i := range lgSchedule {
 		teamGames := len(lgSchedule[i])
 		if teamGames != config.NumGames {
-			fmt.Println(fmt.Sprintf("%d: %d", i, teamGames))
+			fmt.Println(fmt.Sprintf("%d: %d (%d)", i, teamGames, config.NumGames))
 		}
 	}
 }
@@ -82,7 +94,7 @@ func maxTime(t1, t2 time.Time) time.Time {
 func randSeriesLength(min, max int) int {
 	rng := max - min
 	if rng <= 0 {
-		return 0
+		rng = 0
 	}
 	return rand.Intn(rng) + min
 }

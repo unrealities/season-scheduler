@@ -4,7 +4,7 @@
     "doubleHeaders": false,
     "numGames": 10,
     "seriesMax": 4,
-    "seriesMin": 2,
+    "seriesMin": 3,
     "teams": [
         {
             "conference": 0,
