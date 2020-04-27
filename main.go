@@ -92,9 +92,10 @@ func maxTime(t1, t2 time.Time) time.Time {
 }
 
 func randSeriesLength(min, max int) int {
+	rand.Seed(time.Now().UnixNano())
 	rng := max - min
 	if rng <= 0 {
 		rng = 0
 	}
-	return rand.Intn(rng) + min
+	return rand.Intn(rng+1) + min
 }
