@@ -52,7 +52,7 @@ func main() {
 
 				seriesLength := randSeriesLength(config.SeriesMin, maxSeriesLength)
 				series := 0
-				for (len(lgSchedule[j]) < config.NumGames) && (series <= seriesLength) && (len(lgSchedule[i]) < config.NumGames) {
+				for (len(lgSchedule[j]) < config.NumGames) && (series < seriesLength) && (len(lgSchedule[i])+series < config.NumGames) {
 					lgGameID++
 					series++
 					// TODO: Handle dates. Don't allow two games in one day
