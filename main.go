@@ -45,14 +45,15 @@ func main() {
 					log.Printf("unable to schedule another series for %d", i)
 					break
 				}
-				maxSeriesLength := config.SeriesMax
-				if gamesRemaining < maxSeriesLength {
-					maxSeriesLength = gamesRemaining
-				}
 
-				seriesLength := randSeriesLength(config.SeriesMin, maxSeriesLength)
+				// try to prevent impossible series. If a team can play a series with exactly how many games
+				// they have remaining, then we set that to the final series length.
+				seriesLength := gamesRemaining
+				if gamesRemaining > config.SeriesMax {
+					seriesLength = randSeriesLength(config.SeriesMin, config.SeriesMax)
+				}
 				series := 0
-				for (len(lgSchedule[j]) < config.NumGames) && (series < seriesLength) && (len(lgSchedule[i])+series < config.NumGames) {
+				for (len(lgSchedule[j]) < config.NumGames) && (series < seriesLength) && (len(lgSchedule[i]) < config.NumGames) {
 					lgGameID++
 					series++
 					// TODO: Handle dates. Don't allow two games in one day
