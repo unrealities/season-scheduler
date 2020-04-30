@@ -22,6 +22,16 @@ func main() {
 	lgGames := schedule{}
 	lgGameID := 0
 
+	// TODO:
+	// We cannot just loop through the teams as it will always leave a team or two at the end with
+	// not enough games to play. Also that is not how we'd want it to work.
+	// We need to generate available teams. Can start with random but then we need to add
+	// weighting to ensure divisional games are played and games are not played too close together
+	totalExpectedGames := config.NumGames * (numTeams / 2)
+	for lgGameID < totalExpectedGames {
+		// Pick two teams for a series to play against each other
+		lgGameID++
+	}
 	// Generate games
 	for i := range lgSchedule {
 		// check to see if a given team's schedule has reached the required number of games
