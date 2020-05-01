@@ -93,6 +93,12 @@ func main() {
 			fmt.Println(fmt.Sprintf("%d: %d (%d)", i, teamGames, config.NumGames))
 		}
 	}
+
+	fmt.Printf("Random Team: %+v \n", randTeam(config.Teams))
+}
+
+func findTeam(possibleOpponents []team) team {
+	return randTeam(possibleOpponents)
 }
 
 func maxTime(t1, t2 time.Time) time.Time {
@@ -109,4 +115,9 @@ func randSeriesLength(min, max int) int {
 		rng = 0
 	}
 	return rand.Intn(rng+1) + min
+}
+
+func randTeam(teams []team) team {
+	rand.Seed(time.Now().UnixNano())
+	return teams[rand.Intn(len(teams))]
 }
