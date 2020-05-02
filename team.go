@@ -7,14 +7,15 @@ import (
 type team struct {
 	Conference int    `json:"conference"`
 	Divison    int    `json:"division"`
+	GameCount  int    `json:"gameCount"`
 	ID         int    `json:"ID"`
 	Name       string `json:"name"`
 	Region     string `json:"region"`
 }
 
-// nextPlayableDate prevents a team from playing more than the desired number of games on a given day
+// NextPlayableDate prevents a team from playing more than the desired number of games on a given day
 // and gives the next available date that the team can play
-func (t team) nextPlayableDate(date time.Time, doubleHeaders bool, games schedule, seriesLength int) time.Time {
+func (t team) NextPlayableDate(date time.Time, doubleHeaders bool, games schedule, seriesLength int) time.Time {
 	// TODO: Handle doubleHeaders
 	if doubleHeaders {
 		return date
@@ -41,4 +42,9 @@ func (t team) nextPlayableDate(date time.Time, doubleHeaders bool, games schedul
 	// TODO: account for too many consecutive games
 	// TODO: allow for travel days
 	return mostRecentDate.AddDate(0, 0, 1)
+}
+
+func (t team) IncrementGameCount() int {
+	t.GameCount++
+	return t.GameCount
 }

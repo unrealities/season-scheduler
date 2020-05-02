@@ -21,6 +21,10 @@ func main() {
 	lgSchedule := make(schedules, numTeams, numTeams)
 	lgGames := schedule{}
 	lgGameID := 0
+	teamAvailability := map[int]bool{}
+	for i := range teamAvailability {
+		teamAvailability[i] = true
+	}
 
 	// TODO:
 	// We cannot just loop through the teams as it will always leave a team or two at the end with
@@ -68,8 +72,8 @@ func main() {
 					series++
 					// TODO: Handle dates. Don't allow two games in one day
 					// TODO: Allow config for double-headers (still has to be same two teams)
-					htNextGame := config.Teams[j].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[j], seriesLength)
-					atNextGame := config.Teams[i].nextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[i], seriesLength)
+					htNextGame := config.Teams[j].NextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[j], seriesLength)
+					atNextGame := config.Teams[i].NextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[i], seriesLength)
 					nextGame := maxTime(htNextGame, atNextGame)
 
 					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j, Time: nextGame}
@@ -93,8 +97,6 @@ func main() {
 			fmt.Println(fmt.Sprintf("%d: %d (%d)", i, teamGames, config.NumGames))
 		}
 	}
-
-	fmt.Printf("Random Team: %+v \n", randTeam(config.Teams))
 }
 
 func findTeam(possibleOpponents []team) team {
@@ -120,4 +122,13 @@ func randSeriesLength(min, max int) int {
 func randTeam(teams []team) team {
 	rand.Seed(time.Now().UnixNano())
 	return teams[rand.Intn(len(teams))]
+}
+
+func updateTeamAvailibility(team team, maxGames int, gp map[int]int, ta map[int]bool) map[int]bool {
+	gameCount := team.IncrementGameCount()
+	gp[team.ID] = gameCount
+	if gameCount >= maxGames {
+		ta[team.ID] = false
+	}
+	return ta
 }
