@@ -35,6 +35,7 @@ func main() {
 	for lgGameID < totalExpectedGames {
 		// Pick two teams for a series to play against each other
 		lgGameID++
+		fmt.Printf("Random Available Team: %+v \n", findTeam(config.Teams, teamAvailability))
 	}
 	// Generate games
 	for i := range lgSchedule {
@@ -99,8 +100,13 @@ func main() {
 	}
 }
 
-func findTeam(possibleOpponents []team) team {
-	return randTeam(possibleOpponents)
+func findTeam(teams []team, ta map[int]bool) team {
+	teamID, err := randAvailableTeamID(ta)
+	if err != nil {
+		fmt.Printf("No available teams: %s \n", err)
+		return team{}
+	}
+	return teams[teamID]
 }
 
 func maxTime(t1, t2 time.Time) time.Time {
@@ -119,9 +125,23 @@ func randSeriesLength(min, max int) int {
 	return rand.Intn(rng+1) + min
 }
 
-func randTeam(teams []team) team {
+func randAvailableTeamID(ta map[int]bool) (int, error) {
+	availableTeamIDs := []int{}
+	for teamID, available := range ta {
+		if available {
+			availableTeamIDs = append(availableTeamIDs, teamID)
+		}
+	}
+	numAvailableTeams := len(availableTeamIDs)
+	if numAvailableTeams == 0 {
+		return -1, fmt.Errorf("there are no available teams")
+	}
+	if numAvailableTeams == 1 {
+		return availableTeamIDs[0], nil
+	}
+
 	rand.Seed(time.Now().UnixNano())
-	return teams[rand.Intn(len(teams))]
+	return rand.Intn(numAvailableTeams), nil
 }
 
 func updateTeamAvailibility(team team, maxGames int, gp map[int]int, ta map[int]bool) map[int]bool {
