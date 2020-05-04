@@ -16,13 +16,15 @@ func main() {
 		fmt.Printf("unable to parse config file: %s", err)
 	}
 
+	rand.Seed(time.Now().UnixNano())
+
 	// Instantiate a league schedule with team's schedules
 	numTeams := len(config.Teams)
 	lgSchedule := make(schedules, numTeams, numTeams)
 	lgGames := schedule{}
 	lgGameID := 0
 	teamAvailability := map[int]bool{}
-	for i := range teamAvailability {
+	for i := 0; i < numTeams; i++ {
 		teamAvailability[i] = true
 	}
 
@@ -117,7 +119,6 @@ func maxTime(t1, t2 time.Time) time.Time {
 }
 
 func randSeriesLength(min, max int) int {
-	rand.Seed(time.Now().UnixNano())
 	rng := max - min
 	if rng <= 0 {
 		rng = 0
@@ -140,7 +141,6 @@ func randAvailableTeamID(ta map[int]bool) (int, error) {
 		return availableTeamIDs[0], nil
 	}
 
-	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(numAvailableTeams), nil
 }
 
