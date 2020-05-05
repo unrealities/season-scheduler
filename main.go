@@ -37,7 +37,11 @@ func main() {
 	for lgGameID < totalExpectedGames {
 		// Pick two teams for a series to play against each other
 		lgGameID++
-		fmt.Printf("Random Available Team: %+v \n", findTeam(config.Teams, teamAvailability))
+		homeTeam := findTeam(config.Teams, teamAvailability)
+		teamAvailabilityWithoutHomeTeam := teamAvailability
+		teamAvailabilityWithoutHomeTeam[homeTeam.ID] = false
+		awayTeam := findTeam(config.Teams, teamAvailabilityWithoutHomeTeam)
+		fmt.Printf("Home Team: %+v | Away team: %+v \n", homeTeam, awayTeam)
 	}
 	// Generate games
 	for i := range lgSchedule {
