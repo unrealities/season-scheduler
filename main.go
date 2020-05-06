@@ -36,8 +36,14 @@ func main() {
 	totalExpectedGames := config.NumGames * (numTeams / 2)
 	for lgGameID < totalExpectedGames {
 		// Pick two teams for a series to play against each other
-		lgGameID++
 		homeTeam := findTeam(config.Teams, teamAvailability)
+		homeTeamGamesRemaining := config.NumGames - len(lgSchedule[homeTeam.ID])
+		if homeTeamGamesRemaining < config.SeriesMax {
+			log.Printf("unable to schedule another series for %+v", homeTeam)
+			continue
+		}
+		lgGameID++
+
 		teamAvailabilityWithoutHomeTeam := teamAvailability
 		teamAvailabilityWithoutHomeTeam[homeTeam.ID] = false
 		awayTeam := findTeam(config.Teams, teamAvailabilityWithoutHomeTeam)
