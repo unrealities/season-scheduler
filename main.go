@@ -42,59 +42,33 @@ func main() {
 			log.Printf("unable to schedule another series for %+v", homeTeam)
 			continue
 		}
-		lgGameID++
+
+		seriesLength := homeTeamGamesRemaining
+		if homeTeamGamesRemaining > config.SeriesMax {
+			seriesLength = randSeriesLength(config.SeriesMin, config.SeriesMax)
+		}
+		if homeTeamGamesRemaining > config.SeriesMax {
+			seriesLength = randSeriesLength(config.SeriesMin, config.SeriesMax)
+		}
+		series := 0
 
 		teamAvailabilityWithoutHomeTeam := teamAvailability
 		teamAvailabilityWithoutHomeTeam[homeTeam.ID] = false
 		awayTeam := findTeam(config.Teams, teamAvailabilityWithoutHomeTeam)
-		fmt.Printf("Home Team: %+v | Away team: %+v \n", homeTeam, awayTeam)
-	}
-	// Generate games
-	for i := range lgSchedule {
-		// check to see if a given team's schedule has reached the required number of games
-		if len(lgSchedule[i]) < config.NumGames {
-			for j := range lgSchedule {
-				// a team cannot play itself
-				if i == j {
-					continue
-				}
 
-				// make sure a team is not playing more games than they should
-				if len(lgSchedule[i]) >= config.NumGames {
-					break
-				}
+		for (len(lgSchedule[homeTeam.ID]) < config.NumGames) && (series < seriesLength) && (len(lgSchedule[awayTeam.ID]) < config.NumGames) {
+			lgGameID++
+			series++
+			// TODO: Handle dates. Don't allow two games in one day
+			// TODO: Allow config for double-headers (still has to be same two teams)
+			htNextGame := homeTeam.NextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[homeTeam.ID], seriesLength)
+			atNextGame := awayTeam.NextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[awayTeam.ID], seriesLength)
+			nextGame := maxTime(htNextGame, atNextGame)
 
-				// check to see if opponent still needs to play games
-				// TODO: This will consume all games against a single opponent
-
-				gamesRemaining := config.NumGames - len(lgSchedule[i])
-				if gamesRemaining < config.SeriesMax {
-					log.Printf("unable to schedule another series for %d", i)
-					break
-				}
-
-				// try to prevent impossible series. If a team can play a series with exactly how many games
-				// they have remaining, then we set that to the final series length.
-				seriesLength := gamesRemaining
-				if gamesRemaining > config.SeriesMax {
-					seriesLength = randSeriesLength(config.SeriesMin, config.SeriesMax)
-				}
-				series := 0
-				for (len(lgSchedule[j]) < config.NumGames) && (series < seriesLength) && (len(lgSchedule[i]) < config.NumGames) {
-					lgGameID++
-					series++
-					// TODO: Handle dates. Don't allow two games in one day
-					// TODO: Allow config for double-headers (still has to be same two teams)
-					htNextGame := config.Teams[j].NextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[j], seriesLength)
-					atNextGame := config.Teams[i].NextPlayableDate(config.StartDate, config.DoubleHeaders, lgSchedule[i], seriesLength)
-					nextGame := maxTime(htNextGame, atNextGame)
-
-					newGame := game{ID: lgGameID, AwayTeam: i, HomeTeam: j, Time: nextGame}
-					lgSchedule[j] = append(lgSchedule[j], newGame)
-					lgSchedule[i] = append(lgSchedule[i], newGame)
-					lgGames = append(lgGames, newGame)
-				}
-			}
+			newGame := game{ID: lgGameID, AwayTeam: homeTeam.ID, HomeTeam: awayTeam.ID, Time: nextGame}
+			lgSchedule[homeTeam.ID] = append(lgSchedule[homeTeam.ID], newGame)
+			lgSchedule[awayTeam.ID] = append(lgSchedule[awayTeam.ID], newGame)
+			lgGames = append(lgGames, newGame)
 		}
 	}
 
